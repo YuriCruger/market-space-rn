@@ -1,4 +1,4 @@
-import { StatusBar, Text } from "react-native";
+import { StatusBar } from "react-native";
 import "./global.css";
 import {
   useFonts,
@@ -6,6 +6,7 @@ import {
   Karla_700Bold,
 } from "@expo-google-fonts/karla";
 import { Loading } from "@/components/Loading";
+import { Routes } from "@/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Karla_400Regular, Karla_700Bold });
@@ -16,13 +17,7 @@ export default function App() {
         backgroundColor={"transparent"}
         translucent
       />
-      {fontsLoaded ? (
-        <Text className="text-sm ">
-          Open up App.tsx to start working on your app!
-        </Text>
-      ) : (
-        <Loading />
-      )}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </>
   );
 }
