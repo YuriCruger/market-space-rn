@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}"],
+  content: ["./App.{js,jsx,ts,tsx}", "src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
@@ -15,6 +15,10 @@ module.exports = {
         "gray-5": "#D9D8DA",
         "gray-6": "#EDECEE",
         "gray-7": "#F7F7F8",
+      },
+      fontFamily: {
+        karlaRegular: ["Karla_400Regular"],
+        karlaBold: ["Karla_700Bold"],
       },
     },
   },
