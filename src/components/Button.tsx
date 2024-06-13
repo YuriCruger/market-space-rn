@@ -9,6 +9,7 @@ import {
 type ButtonProps = TouchableOpacityProps & {
   children: ReactNode;
   type: "purple" | "gray" | "black";
+  isLoading?: boolean;
 };
 
 type ButtonTextProps = TextProps & {
@@ -20,7 +21,7 @@ type ButtonIconProps = {
   children: ReactNode;
 };
 
-function Button({ children, type, ...rest }: ButtonProps) {
+function Button({ children, type, isLoading, ...rest }: ButtonProps) {
   return (
     <Pressable
       className={`px-3 h-12 gap-2 rounded-md justify-center items-center ${
@@ -29,7 +30,7 @@ function Button({ children, type, ...rest }: ButtonProps) {
           : type === "gray"
           ? "bg-gray-5"
           : "bg-gray-1"
-      }`}
+      } ${isLoading ? "opacity-70" : "opacity-100"}`}
       {...rest}
     >
       {children}

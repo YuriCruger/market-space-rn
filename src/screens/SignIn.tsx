@@ -1,17 +1,46 @@
 import { Image, ScrollView, Text, View } from "react-native";
 import logoImg from "@/assets/logo.png";
-import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { PasswordIcon } from "@/components/PasswordIcon";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@/routes/auth.routes";
 import { AuthPrompt } from "@/components/AuthPrompt";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormInput } from "@/components/FormInput";
+import { AppError } from "@/utils/AppError";
+import Toast from "react-native-toast-message";
+import { useAuth } from "@/hooks/useAuth";
+import { SpinnerGap } from "phosphor-react-native";
+
+const signInSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Insira um e-mail")
+    .email("Insira um e-mail válido"),
+  password: z.string().trim().min(6, "A senha deve ter até 6 dígitos"),
+});
+
+type SignInSchemaProps = z.infer<typeof signInSchema>;
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const { signIn } = useAuth();
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+  const { control, handleSubmit } = useForm<SignInSchemaProps>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(signInSchema),
+  });
 
   function togglePasswordVisibility() {
     setShowPassword((prevState) => !prevState);
@@ -19,6 +48,26 @@ export function SignIn() {
 
   function handleCreateAccount() {
     navigation.navigate("signUp");
+  }
+
+  async function handleSignIn({ email, password }: SignInSchemaProps) {
+    try {
+      setIsLoading(true);
+      await signIn(email, password);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Não foi possível fazer login. Tente novamente mais tarde.";
+
+      Toast.show({
+        type: "error",
+        text1: title,
+        text1Style: { fontSize: 16 },
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -34,18 +83,41 @@ export function SignIn() {
           <Text className="text-gray-2 text-sm text-center font-karlaRegular">
             Acesse sua conta
           </Text>
-          <Input placeholder="E-mail" />
+          <View>
+            <FormInput
+              control={control}
+              name={"email"}
+              placeholder={"E-mail"}
+            />
+          </View>
           <PasswordIcon
             isVisible={showPassword}
             toggleVisibility={togglePasswordVisibility}
           >
-            <Input secureTextEntry={!showPassword} placeholder="Senha" />
+            <FormInput
+              control={control}
+              name={"password"}
+              placeholder={"Senha"}
+              isPassword={!showPassword}
+            />
           </PasswordIcon>
         </View>
 
         <View className="mt-8 mb-14 w-full">
-          <Button type="purple">
-            <Button.Text type="light_gray">Enviar pedido</Button.Text>
+          <Button
+            type="purple"
+            onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
+          >
+            {isLoading ? (
+              <View className="animate-spin">
+                <Button.Icon>
+                  <SpinnerGap size={24} color="#EDECEE" />
+                </Button.Icon>
+              </View>
+            ) : (
+              <Button.Text type="light_gray">Enviar pedido</Button.Text>
+            )}
           </Button>
         </View>
 
