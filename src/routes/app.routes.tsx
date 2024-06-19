@@ -4,10 +4,12 @@ import {
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 import { HomeTabs } from "./homeTabs";
+import { AdPreview } from "@/screens/AdPreview";
 
 type AppRoutes = {
   home: undefined;
   createAd: undefined;
+  adPreview: undefined;
 };
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -19,6 +21,7 @@ export function AppRoutes() {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="home" component={HomeTabs} />
       <Screen name="createAd" component={CreateAd} />
+      <Screen name="adPreview" component={AdPreview} />
     </Navigator>
   );
 }

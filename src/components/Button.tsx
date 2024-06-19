@@ -4,6 +4,7 @@ import {
   Text,
   TextProps,
   TouchableOpacityProps,
+  View,
 } from "react-native";
 
 type ButtonProps = TouchableOpacityProps & {
@@ -33,7 +34,7 @@ function Button({ children, type, isLoading, ...rest }: ButtonProps) {
       } ${isLoading ? "opacity-70" : "opacity-100"}`}
       {...rest}
     >
-      {children}
+      <View className="flex-row items-center gap-2">{children}</View>
     </Pressable>
   );
 }

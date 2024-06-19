@@ -107,8 +107,10 @@ api.registerInterceptTokenManager = (signOut) => {
       }
 
       if (requestError.response && requestError.response.data) {
+        console.log("request error => ", requestError);
         return Promise.reject(new AppError(requestError.response.data.message));
       } else {
+        console.log("request error => ", requestError.response.data.message);
         return Promise.reject(requestError);
       }
     }

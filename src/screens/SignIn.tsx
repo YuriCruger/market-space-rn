@@ -5,7 +5,6 @@ import { PasswordIcon } from "@/components/PasswordIcon";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@/routes/auth.routes";
-import { AuthPrompt } from "@/components/AuthPrompt";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +12,8 @@ import { FormInput } from "@/components/FormInput";
 import { AppError } from "@/utils/AppError";
 import Toast from "react-native-toast-message";
 import { useAuth } from "@/hooks/useAuth";
-import { SpinnerGap } from "phosphor-react-native";
+import { SpinnerIcon } from "@/components/SpinnerIcon";
+import { TextRegular } from "@/components/TextRegular";
 
 const signInSchema = z.object({
   email: z
@@ -110,11 +110,7 @@ export function SignIn() {
             isLoading={isLoading}
           >
             {isLoading ? (
-              <View className="animate-spin">
-                <Button.Icon>
-                  <SpinnerGap size={24} color="#EDECEE" />
-                </Button.Icon>
-              </View>
+              <SpinnerIcon />
             ) : (
               <Button.Text type="light_gray">Enviar pedido</Button.Text>
             )}
@@ -122,7 +118,7 @@ export function SignIn() {
         </View>
 
         <View className="w-full gap-4">
-          <AuthPrompt title="Ainda não tem acesso?" />
+          <TextRegular text="Ainda não tem acesso?" className="text-center" />
           <Button type="gray" onPress={handleCreateAccount}>
             <Button.Text type="dark_gray">Criar uma conta</Button.Text>
           </Button>

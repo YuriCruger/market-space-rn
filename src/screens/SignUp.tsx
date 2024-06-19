@@ -1,6 +1,5 @@
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import logoImg from "@/assets/logo.png";
-import avatarImg from "@/assets/avatar.png";
 import { PencilSimpleLine, SpinnerGap, User } from "phosphor-react-native";
 import { PasswordIcon } from "@/components/PasswordIcon";
 import { useState } from "react";
@@ -17,9 +16,12 @@ import * as FileSystem from "expo-file-system";
 import Toast from "react-native-toast-message";
 import { api } from "@/services/api";
 import { AppError } from "@/utils/AppError";
+import { MAX_IMAGE_SIZE_MB } from "@/utils/MaxImageSize";
+import { ImageContainer } from "@/components/ImageContainer";
+import { TextBold } from "@/components/TextBold";
+import { TextRegular } from "@/components/TextRegular";
 
 const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-const MAX_IMAGE_SIZE_MB = 5;
 
 const signUpSchema = z
   .object({
@@ -48,7 +50,7 @@ const signUpSchema = z
     }
   });
 
-type SignUpSchemaProps = z.infer<typeof signUpSchema>;
+type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
 export function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,7 @@ export function SignUp() {
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-  const { control, handleSubmit } = useForm<SignUpSchemaProps>({
+  const { control, handleSubmit } = useForm<SignUpSchemaType>({
     defaultValues: {
       name: "",
       email: "",
@@ -130,7 +132,7 @@ export function SignUp() {
     }
   }
 
-  async function handleSignUp(values: SignUpSchemaProps) {
+  async function handleSignUp(values: SignUpSchemaType) {
     try {
       setIsLoading(true);
       const data = new FormData();
@@ -167,26 +169,26 @@ export function SignUp() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View className="bg-gray-6 flex-1  px-12">
+      <View className="bg-gray-6 flex-1 px-12 pb-5">
         <View className="mt-16 items-center">
           <Image source={logoImg} className="w-16 h-10" />
-          <Text className="text-gray-1 font-karlaBold text-xl mt-3 mb-2">
-            Boas vindas!
-          </Text>
-          <Text className="text-gray-2 text-sm text-center">
-            Crie sua conta e use o espaço para comprar itens variados e vender
-            seus produtos
-          </Text>
+          <TextBold text="Boas vindas!" type="LARGE" className="mt-3 mb-2" />
+
+          <TextRegular
+            text="Crie sua conta e use o espaço para comprar itens variados e vender
+            seus produtos"
+            className="text-center"
+          />
         </View>
 
         <View className="relative items-center mt-8 mb-4">
-          <View className="h-[88px] w-[88px] rounded-full border-4 border-blue-light bg-gray-5 items-center justify-center overflow-hidden">
+          <ImageContainer>
             {userPhoto ? (
               <Image source={userPhoto} className="w-full h-full" />
             ) : (
               <User size={48} color="#9F9BA1" weight="bold" />
             )}
-          </View>
+          </ImageContainer>
 
           <Pressable
             onPress={handlePhotoSelected}
@@ -259,7 +261,7 @@ export function SignUp() {
         </View>
 
         <View className="mt-12 gap-4">
-          <AuthPrompt title="Já tem uma conta?" />
+          <TextRegular text="Já tem uma conta?" className="text-center" />
           <Button type="gray" onPress={handleLoginPage}>
             <Button.Text type="dark_gray">Ir para o login</Button.Text>
           </Button>
