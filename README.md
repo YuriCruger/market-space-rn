@@ -23,10 +23,14 @@ Este é um projeto desenvolvido em React Native, criado com o objetivo de simula
 
 ![mediamodifier_image(7)](https://github.com/user-attachments/assets/54507155-dfe8-48b5-ab32-f0cc5eba6e3c)
 
+### Página de anúncios
+
+![mediamodifier_image(8)](https://github.com/user-attachments/assets/7e422533-c9c1-4ec4-8fcf-8949df20311e)
 
 ### Página do anúncio
 
 ![mediamodifier_image(9)](https://github.com/user-attachments/assets/3b88fb58-3b25-48c5-a12d-969e6ce074fa)
+
 
 ## Instruções para Executar o Projeto
 
