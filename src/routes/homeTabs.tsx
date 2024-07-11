@@ -25,6 +25,7 @@ export function HomeTabs() {
   return (
     <Navigator
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#3E3A40",
@@ -35,7 +36,6 @@ export function HomeTabs() {
           height: Platform.OS === "android" ? "auto" : 72,
           paddingBottom: 28,
           paddingTop: 20,
-          paddingHorizontal: 56,
         },
       }}
     >

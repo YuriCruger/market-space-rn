@@ -109,11 +109,7 @@ export function SignIn() {
             onPress={handleSubmit(handleSignIn)}
             isLoading={isLoading}
           >
-            {isLoading ? (
-              <SpinnerIcon />
-            ) : (
-              <Button.Text type="light_gray">Enviar pedido</Button.Text>
-            )}
+            <Button.Text type="light_gray">Enviar pedido</Button.Text>
           </Button>
         </View>
 

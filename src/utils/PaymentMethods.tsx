@@ -15,9 +15,9 @@ export const PAYMENT_ICON = {
 };
 
 export const paymentOptions = [
-  { value: "boleto", label: "Boleto" },
-  { value: "pix", label: "Pix" },
-  { value: "cash", label: "Dinheiro" },
-  { value: "card", label: "Cartão de crédito" },
-  { value: "deposit", label: "Cartão de débito" },
+  { key: "boleto", name: "Boleto" },
+  { key: "pix", name: "Pix" },
+  { key: "cash", name: "Dinheiro" },
+  { key: "card", name: "Cartão de crédito" },
+  { key: "deposit", name: "Cartão de débito" },
 ];

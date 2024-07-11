@@ -9,14 +9,17 @@ import { Button } from "./Button";
 import { Plus } from "phosphor-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/routes/app.routes";
+import { UserDTO } from "@/dtos/UserDTO";
 
-export function HomeHeader() {
-  const { user } = useAuth();
+interface HomeHeaderProps {
+  user: UserDTO;
+}
 
+export function HomeHeader({ user }: HomeHeaderProps) {
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleCreateAdNavigate() {
-    navigate("createAd");
+  function handleAdCreateNavigate() {
+    navigate("adCreate");
   }
 
   return (
@@ -34,10 +37,10 @@ export function HomeHeader() {
 
       <View className="flex-1">
         <TextRegular text="Boas Vindas," type="LARGE" />
-        <TextBold text={user.name.concat("!")} type="MEDIUM" />
+        <TextBold text={user.name} type="MEDIUM" />
       </View>
 
-      <Button type="black" onPress={handleCreateAdNavigate}>
+      <Button type="black" onPress={handleAdCreateNavigate}>
         <Button.Icon>
           <Plus size={16} color="#EDECEE" />
         </Button.Icon>

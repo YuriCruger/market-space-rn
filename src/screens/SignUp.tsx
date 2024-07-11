@@ -1,25 +1,23 @@
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, View } from "react-native";
 import logoImg from "@/assets/logo.png";
-import { PencilSimpleLine, SpinnerGap, User } from "phosphor-react-native";
+import { PencilSimpleLine, User } from "phosphor-react-native";
 import { PasswordIcon } from "@/components/PasswordIcon";
 import { useState } from "react";
 import { Button } from "@/components/Button";
-import { AuthPrompt } from "@/components/AuthPrompt";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@/routes/auth.routes";
 import { FormInput } from "@/components/FormInput";
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import Toast from "react-native-toast-message";
 import { api } from "@/services/api";
 import { AppError } from "@/utils/AppError";
-import { MAX_IMAGE_SIZE_MB } from "@/utils/MaxImageSize";
 import { ImageContainer } from "@/components/ImageContainer";
 import { TextBold } from "@/components/TextBold";
 import { TextRegular } from "@/components/TextRegular";
+import { ImagePickerComponent } from "@/components/ImagePicker";
+import { FileDTO } from "@/dtos/FileDTO";
 
 const phoneRegex = /^\+?[1-9]\d{1,14}$/;
 
@@ -56,7 +54,7 @@ export function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [userPhoto, setUserPhoto] = useState<any>(null);
+  const [userPhoto, setUserPhoto] = useState<FileDTO>({} as FileDTO);
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
@@ -83,53 +81,8 @@ export function SignUp() {
     navigation.navigate("signIn");
   }
 
-  function isImageTooLarge(size: number): boolean {
-    const sizeInMB = size / 1024 / 1024;
-    return sizeInMB > MAX_IMAGE_SIZE_MB;
-  }
-
-  async function handlePhotoSelected() {
-    try {
-      const photoSelected = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
-        aspect: [4, 4],
-        allowsEditing: true,
-      });
-
-      if (photoSelected.canceled) {
-        return;
-      }
-
-      const photoURI = photoSelected.assets[0].uri;
-      const photoType = photoSelected.assets[0].type;
-
-      if (photoURI) {
-        const photoInfo = await FileSystem.getInfoAsync(photoURI);
-
-        if (photoInfo.exists && isImageTooLarge(photoInfo.size)) {
-          Toast.show({
-            type: "error",
-            text1: "Imagem muito grande",
-            text2: "Selecione uma imagem até 5MB.",
-            text1Style: { fontSize: 16 },
-            text2Style: { fontSize: 12 },
-          });
-        }
-      }
-
-      const fileExtension = photoURI.split(".").pop();
-
-      const photoFile = {
-        name: `hash-.${fileExtension}`.toLowerCase(),
-        uri: photoURI,
-        type: `${photoType}/${fileExtension}`,
-      } as any;
-
-      setUserPhoto(photoFile);
-    } catch (error) {
-      console.error("Error selecting photo:", error);
-    }
+  function handlePhotoSelected(data: FileDTO) {
+    setUserPhoto(data);
   }
 
   async function handleSignUp(values: SignUpSchemaType) {
@@ -137,8 +90,8 @@ export function SignUp() {
       setIsLoading(true);
       const data = new FormData();
 
-      if (userPhoto) {
-        data.append("avatar", userPhoto);
+      if (userPhoto.name) {
+        data.append("avatar", userPhoto as any);
       }
 
       data.append("name", values.name);
@@ -151,6 +104,8 @@ export function SignUp() {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      navigation.navigate("signIn");
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
@@ -168,8 +123,8 @@ export function SignUp() {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View className="bg-gray-6 flex-1 px-12 pb-5">
+    <View className="bg-gray-6 flex-1 px-12 pb-5">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-16 items-center">
           <Image source={logoImg} className="w-16 h-10" />
           <TextBold text="Boas vindas!" type="LARGE" className="mt-3 mb-2" />
@@ -183,19 +138,18 @@ export function SignUp() {
 
         <View className="relative items-center mt-8 mb-4">
           <ImageContainer>
-            {userPhoto ? (
+            {userPhoto.name ? (
               <Image source={userPhoto} className="w-full h-full" />
             ) : (
               <User size={48} color="#9F9BA1" weight="bold" />
             )}
           </ImageContainer>
 
-          <Pressable
-            onPress={handlePhotoSelected}
-            className="absolute left-[55%] bottom-0 bg-blue-light rounded-full h-10 w-10 items-center justify-center "
-          >
-            <PencilSimpleLine size={16} color="white" />
-          </Pressable>
+          <View className="absolute left-[55%] bottom-0 bg-blue-light rounded-full h-10 w-10 items-center justify-center">
+            <ImagePickerComponent onImagePick={handlePhotoSelected}>
+              <PencilSimpleLine size={16} color="white" />
+            </ImagePickerComponent>
+          </View>
         </View>
 
         <View className="gap-4">
@@ -248,15 +202,7 @@ export function SignUp() {
             onPress={handleSubmit(handleSignUp)}
             isLoading={isLoading}
           >
-            {isLoading ? (
-              <View className="animate-spin">
-                <Button.Icon>
-                  <SpinnerGap size={24} color="#EDECEE" />
-                </Button.Icon>
-              </View>
-            ) : (
-              <Button.Text type="light_gray">Criar</Button.Text>
-            )}
+            <Button.Text type="light_gray">Criar</Button.Text>
           </Button>
         </View>
 
@@ -266,7 +212,7 @@ export function SignUp() {
             <Button.Text type="dark_gray">Ir para o login</Button.Text>
           </Button>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }

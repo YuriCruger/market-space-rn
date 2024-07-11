@@ -1,31 +1,48 @@
 import { View } from "react-native";
 import { TextBold } from "./TextBold";
+import { X } from "phosphor-react-native";
 
 interface ProductConditionBadgeProps {
   isNewProduct: boolean;
-  type?: "GRAY_LIGHT" | "GRAY_DARK" | "BLUE";
+  color?: "GRAY_LIGHT" | "GRAY_DARK" | "BLUE";
+  type?: "PRIMARY" | "SECONDARY";
+  isSelected?: boolean;
 }
 
 export function ProductConditionBadge({
   isNewProduct,
-  type = "GRAY_LIGHT",
+  color = "GRAY_LIGHT",
+  type = "PRIMARY",
+  isSelected,
 }: ProductConditionBadgeProps) {
   return (
     <View
-      className={`w-[50px] rounded-full px-2 py-0.5 items-center justify-center ${
-        type === "GRAY_LIGHT"
-          ? "bg-gray-5"
-          : type === "GRAY_DARK"
-          ? "bg-gray-2"
-          : "bg-blue"
-      }`}
+      className={`rounded-full px-2 items-center justify-center
+        ${
+          type === "PRIMARY"
+            ? "w-[50px] py-0.5"
+            : `w-[76px] py-1.5 flex-row px-3 ${isSelected && "justify-between"}`
+        }
+         ${
+           color === "GRAY_LIGHT"
+             ? "bg-gray-5"
+             : color === "GRAY_DARK"
+             ? "bg-gray-2"
+             : "bg-blue"
+         }`}
     >
       <TextBold
         text={isNewProduct ? "novo" : "usado"}
         className={`text-xs uppercase ${
-          type !== "GRAY_LIGHT" ? "text-gray-7" : "text-gray-2"
+          color !== "GRAY_LIGHT" ? "text-gray-7" : "text-gray-2"
         }`}
       />
+
+      {isSelected && (
+        <View className="bg-gray-7 rounded-full p-2 w-4 h-4 items-center justify-center">
+          <X size={12} color="#364D9D" />
+        </View>
+      )}
     </View>
   );
 }

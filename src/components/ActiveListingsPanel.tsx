@@ -5,7 +5,13 @@ import { TextRegular } from "./TextRegular";
 import { useNavigation } from "@react-navigation/native";
 import { HomeTabsNavigatorRoutesProps } from "@/routes/homeTabs";
 
-export function AdsCard() {
+interface ActiveListingsPanelProps {
+  activeProducts: number;
+}
+
+export function ActiveListingsPanel({
+  activeProducts,
+}: ActiveListingsPanelProps) {
   const { navigate } = useNavigation<HomeTabsNavigatorRoutesProps>();
 
   function handleMyAdsNavigate() {
@@ -20,7 +26,7 @@ export function AdsCard() {
       <Tag size={22} color="#364D9D" />
 
       <View className="flex-1 ml-4">
-        <TextBold text="4" type="LARGE" />
+        <TextBold text={String(activeProducts)} type="LARGE" />
         <TextRegular text="anúncios ativos" type="SMALL" />
       </View>
 

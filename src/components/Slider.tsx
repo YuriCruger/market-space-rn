@@ -1,3 +1,4 @@
+import { api } from "@/services/api";
 import { Dimensions, Image, View } from "react-native";
 import Animated, {
   Extrapolate,
@@ -7,19 +8,27 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import { Loading } from "./Loading";
+import { TextBold } from "./TextBold";
 
-const window = Dimensions.get("window");
-const PAGE_WIDTH = window.width;
 const windowWidth = Dimensions.get("window").width;
 
-export function Slider({ images }: { images: { uri: string }[] }) {
+interface ImageItem {
+  path?: string;
+  uri?: string;
+}
+
+interface SliderProps {
+  images: ImageItem[];
+  is_active?: boolean;
+}
+
+export function Slider({ images, is_active = true }: SliderProps) {
   const progressValue = useSharedValue<number>(0);
 
   return (
     <>
       <Carousel
-        width={PAGE_WIDTH}
+        width={windowWidth}
         height={280}
         loop={false}
         pagingEnabled={true}
@@ -28,10 +37,32 @@ export function Slider({ images }: { images: { uri: string }[] }) {
         }
         data={images}
         renderItem={({ item }) => (
-          <Image
-            style={{ width: PAGE_WIDTH, height: 280 }}
-            source={{ uri: item.uri }}
-          />
+          <>
+            {!is_active && (
+              <View className="absolute z-20 w-full h-full items-center justify-center">
+                <View className="bg-gray-1 absolute z-20 w-full h-full opacity-50" />
+                <TextBold
+                  text="Anúncio desativado"
+                  className="text-gray-7 z-30"
+                  type="LARGE"
+                />
+              </View>
+            )}
+
+            <Image
+              style={{
+                width: windowWidth,
+                height: 280,
+              }}
+              source={{
+                uri: item.uri
+                  ? item.uri
+                  : item.path
+                  ? `${api.defaults.baseURL}/images/${item.path}`
+                  : undefined,
+              }}
+            />
+          </>
         )}
       />
 
@@ -40,7 +71,7 @@ export function Slider({ images }: { images: { uri: string }[] }) {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            width: PAGE_WIDTH,
+            width: windowWidth,
             paddingHorizontal: 10,
             marginTop: -15,
           }}

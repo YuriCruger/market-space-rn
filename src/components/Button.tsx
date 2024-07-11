@@ -6,6 +6,8 @@ import {
   TouchableOpacityProps,
   View,
 } from "react-native";
+import { Loading } from "./Loading";
+import { SpinnerIcon } from "./SpinnerIcon";
 
 type ButtonProps = TouchableOpacityProps & {
   children: ReactNode;
@@ -25,16 +27,19 @@ type ButtonIconProps = {
 function Button({ children, type, isLoading, ...rest }: ButtonProps) {
   return (
     <Pressable
+      disabled={isLoading}
       className={`px-3 h-12 gap-2 rounded-md justify-center items-center ${
         type === "purple"
           ? "bg-blue-light"
           : type === "gray"
           ? "bg-gray-5"
           : "bg-gray-1"
-      } ${isLoading ? "opacity-70" : "opacity-100"}`}
+      } ${isLoading ? "opacity-90" : "opacity-100"}`}
       {...rest}
     >
-      <View className="flex-row items-center gap-2">{children}</View>
+      <View className="flex-row items-center gap-2">
+        {isLoading ? <SpinnerIcon /> : <>{children}</>}
+      </View>
     </Pressable>
   );
 }

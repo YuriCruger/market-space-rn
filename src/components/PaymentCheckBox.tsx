@@ -1,30 +1,36 @@
+import { PaymentMethods } from "@/dtos/ProductDTO";
 import { CheckBox } from "@rneui/base";
 
 interface PaymentCheckBoxProps {
-  paymentMethods: string[];
-  setPaymentMethods: React.Dispatch<React.SetStateAction<string[]>>;
-  value: string;
-  label: string;
+  paymentMethods: PaymentMethods[];
+  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethods[]>>;
+  paymentKey: string;
+  paymentName: string;
 }
 
 export function PaymentCheckBox({
-  paymentMethods,
+  paymentMethods = [],
   setPaymentMethods,
-  value,
-  label,
+  paymentKey,
+  paymentName,
 }: PaymentCheckBoxProps) {
   function handlePaymentChecked() {
-    if (paymentMethods.includes(value)) {
+    if (paymentMethods.some((payment) => payment.key === paymentKey)) {
       return setPaymentMethods((prevState) =>
-        prevState.filter((payment) => payment !== value)
+        prevState.filter((payment) => payment.key !== paymentKey)
       );
     }
-    setPaymentMethods((prevState) => [...prevState, value]);
+    const newPaymentMethod: PaymentMethods = {
+      key: paymentKey,
+      name: paymentName,
+    };
+
+    setPaymentMethods((prevState) => [...prevState, newPaymentMethod]);
   }
 
   return (
     <CheckBox
-      checked={paymentMethods.includes(value)}
+      checked={paymentMethods.some((payment) => payment.key === paymentKey)}
       onPress={handlePaymentChecked}
       containerStyle={{
         backgroundColor: undefined,
@@ -35,7 +41,7 @@ export function PaymentCheckBox({
       uncheckedIcon="checkbox-blank-outline"
       checkedColor="#647AC7"
       size={24}
-      title={label}
+      title={paymentName}
       titleProps={{
         style: {
           fontSize: 16,
