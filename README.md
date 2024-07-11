@@ -1,6 +1,4 @@
-# Market Space
-
-## Desafio da trilha de React Native da Rocketseat
+# Market Space - Desafio da trilha de React Native da Rocketseat
 
 ## Sobre o projeto
 
@@ -27,3 +25,12 @@ Este é um projeto desenvolvido em React Native, criado com o objetivo de simula
 2. Navegue até o diretório do projeto.
 3. Instale as dependências do projeto utilizando o comando `npm install`.
 4. Execute a aplicação utilizando um emulador Android, ou em um dispositivo físico conectado, utilizando o comando `npx expo start`.
+
+## Instruções para obter o backend do projeto
+
+1. Clone este repositório para o seu ambiente de desenvolvimento.<br/>
+ ```git clone https://github.com/rocketseat-education/ignite-rn-2022-challenge-marketspace-api.git```
+2. Após o download, você deve acessar a pasta do seu projeto e instalar as dependências com o comando ``npm i``.
+3. Para executar o projeto, basta executar o comando ``npm run dev``<br/>
+   
+Com isso, a sua API estará pronta para ser consumida no endereço ``http://localhost:3333``
