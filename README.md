@@ -19,6 +19,15 @@ Este é um projeto desenvolvido em React Native, criado com o objetivo de simula
 - [x] Editar anúncio
 - [x] Publicar um anúncio
 
+### Página Home
+
+![mediamodifier_image(7)](https://github.com/user-attachments/assets/54507155-dfe8-48b5-ab32-f0cc5eba6e3c)
+
+
+### Página do anúncio
+
+![mediamodifier_image(9)](https://github.com/user-attachments/assets/3b88fb58-3b25-48c5-a12d-969e6ce074fa)
+
 ## Instruções para Executar o Projeto
 
 1. Clone este repositório para o seu ambiente de desenvolvimento.<br/>
