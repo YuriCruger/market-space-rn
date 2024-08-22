@@ -6,7 +6,7 @@ import { Slider } from "@/components/Slider";
 import { ProductDTO } from "@/dtos/ProductDTO";
 import { useAuth } from "@/hooks/useAuth";
 import { AppNavigatorRoutesProps } from "@/routes/app.routes";
-import { HomeTabsNavigatorRoutesProps } from "@/routes/homeTabs";
+import { TabRoutesNavigatorRoutesProps } from "@/routes/tab.routes";
 import { api } from "@/services/api";
 import { ConvertNumberToDecimal } from "@/utils/ConvertNumberToDecimal";
 import {
@@ -41,7 +41,7 @@ export function MyAdDetails() {
   const formattedPrice = formatPrice(convertPriceToDecimal);
 
   const appNavigation = useNavigation<AppNavigatorRoutesProps>();
-  const tabNavigation = useNavigation<HomeTabsNavigatorRoutesProps>();
+  const tabNavigation = useNavigation<TabRoutesNavigatorRoutesProps>();
 
   function handleBackNavigate() {
     tabNavigation.navigate("myAds");

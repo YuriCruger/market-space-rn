@@ -35,7 +35,7 @@ export function AdDetails() {
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
   function handleHomeNavigate() {
-    navigate("home");
+    navigate("tabRoutes");
   }
 
   async function handleContact() {

@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { TextBold } from "./TextBold";
 import { TextRegular } from "./TextRegular";
 import { useNavigation } from "@react-navigation/native";
-import { HomeTabsNavigatorRoutesProps } from "@/routes/homeTabs";
+import { TabRoutesNavigatorRoutesProps } from "@/routes/tab.routes";
 
 interface ActiveListingsPanelProps {
   activeProducts: number;
@@ -12,7 +12,7 @@ interface ActiveListingsPanelProps {
 export function ActiveListingsPanel({
   activeProducts,
 }: ActiveListingsPanelProps) {
-  const { navigate } = useNavigation<HomeTabsNavigatorRoutesProps>();
+  const { navigate } = useNavigation<TabRoutesNavigatorRoutesProps>();
 
   function handleMyAdsNavigate() {
     navigate("myAds");

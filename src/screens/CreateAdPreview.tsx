@@ -2,10 +2,7 @@ import { Button } from "@/components/Button";
 import { Slider } from "@/components/Slider";
 import { TextBold } from "@/components/TextBold";
 import { AppNavigatorRoutesProps } from "@/routes/app.routes";
-import {
-  storageCreateAdGet,
-  storageCreateAdRemove,
-} from "@/storage/storageCreateAd";
+import { getStorageAd, removeStorageAd } from "@/storage/storageCreateAd";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ArrowLeft, Tag } from "phosphor-react-native";
 import { useCallback, useState } from "react";
@@ -44,7 +41,7 @@ export function CreateAdPreview() {
   async function fetchStorageData() {
     try {
       setIsFetchingStorage(true);
-      const storageAd = await storageCreateAdGet();
+      const storageAd = await getStorageAd();
 
       const formattedAd = {
         ...storageAd,
@@ -96,7 +93,7 @@ export function CreateAdPreview() {
         },
       });
 
-      await storageCreateAdRemove();
+      await removeStorageAd();
 
       navigation.navigate("myAdDetails", { id: product_id });
     } catch (error) {

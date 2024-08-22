@@ -1,11 +1,13 @@
-import { Pressable } from "react-native";
-import { MAX_IMAGE_SIZE_MB } from "@/utils/MaxImageSize";
 import { ReactNode } from "react";
+import { Pressable } from "react-native";
 import Toast from "react-native-toast-message";
+
+import { MAX_IMAGE_SIZE_MB } from "@/utils/MaxImageSize";
+import { FileDTO } from "@/dtos/FileDTO";
+
 import * as CryptoJS from "crypto-js";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { FileDTO } from "@/dtos/FileDTO";
 
 interface ImagePickerComponentProps {
   onImagePick: (photoFile: FileDTO) => void;
@@ -16,8 +18,8 @@ export function ImagePickerComponent({
   onImagePick,
   children,
 }: ImagePickerComponentProps) {
-  function isImageTooLarge(size: number): boolean {
-    const sizeInMB = size / 1024 / 1024;
+  function isImageTooLarge(photoSize: number): boolean {
+    const sizeInMB = photoSize / 1024 / 1024;
     return sizeInMB > MAX_IMAGE_SIZE_MB;
   }
 

@@ -8,18 +8,18 @@ import {
 import { House, SignOut, Tag } from "phosphor-react-native";
 import { Platform } from "react-native";
 
-type HomeTabsRoutes = {
-  homeTab: undefined;
+type TabRoutesType = {
+  home: undefined;
   myAds: undefined;
   logout: undefined;
 };
 
-export type HomeTabsNavigatorRoutesProps =
-  BottomTabNavigationProp<HomeTabsRoutes>;
+export type TabRoutesNavigatorRoutesProps =
+  BottomTabNavigationProp<TabRoutesType>;
 
-const { Navigator, Screen } = createBottomTabNavigator<HomeTabsRoutes>();
+const { Navigator, Screen } = createBottomTabNavigator<TabRoutesType>();
 
-export function HomeTabs() {
+export function TabRoutes() {
   const { signOut } = useAuth();
 
   return (
@@ -40,7 +40,7 @@ export function HomeTabs() {
       }}
     >
       <Screen
-        name="homeTab"
+        name="home"
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (

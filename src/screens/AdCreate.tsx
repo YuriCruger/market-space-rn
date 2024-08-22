@@ -16,9 +16,9 @@ import { ProductImage } from "@/components/ProductImage";
 import { AppNavigatorRoutesProps } from "@/routes/app.routes";
 import { paymentOptions } from "@/utils/PaymentMethods";
 import {
-  storageCreateAdSave,
-  storageCreateAdRemove,
-  storageCreateAdGet,
+  saveStorageAd,
+  removeStorageAd,
+  getStorageAd,
 } from "@/storage/storageCreateAd";
 import { PaymentMethods } from "@/dtos/ProductDTO";
 import { FileDTO } from "@/dtos/FileDTO";
@@ -83,8 +83,8 @@ export function AdCreate() {
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
   async function handleExitAndCleanup() {
-    await storageCreateAdRemove();
-    navigate("home");
+    await removeStorageAd();
+    navigate("tabRoutes");
   }
 
   function handlePhotoSelected(data: FileDTO) {
@@ -92,7 +92,7 @@ export function AdCreate() {
   }
 
   async function handlePreviewNavigate(values: AdCreateSchemaType) {
-    await storageCreateAdSave(values);
+    await saveStorageAd(values);
 
     navigate("createAdPreview");
   }
@@ -116,7 +116,7 @@ export function AdCreate() {
   }
 
   async function fetchStorageData() {
-    const response = await storageCreateAdGet();
+    const response = await getStorageAd();
 
     if (Object.keys(response).length === 0) {
       return;
